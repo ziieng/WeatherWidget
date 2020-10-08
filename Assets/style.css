@@ -7,6 +7,12 @@ header {
 
 #sideNav {
     margin-top: -10px;
-    min-height: 100%;
-    border-right: thin solid gray;
+    min-height: 90vh;
+    border-right: thin solid lightgray;
+    }
+
+    #curIcon {
+        background-color: lightskyblue;
+        border-radius: 15px;
+        height: 1.5em;
 }

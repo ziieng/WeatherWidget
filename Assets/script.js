@@ -62,7 +62,7 @@ $("#searchBtn").on("click", function (event) {
 function popList() {
     let sidebar = $("#cityBar")
     //populate sidebar list of cities
-    for (i = 0; i < cityList.length - 1; i++) {
+    for (i = 0; i < cityList.length; i++) {
         let next = $("<a>").text(cityList[i].name);
         next.addClass("list-group-item list-group-item-action bg-light city-btn");
         next.attr("data-index", i)
@@ -70,11 +70,10 @@ function popList() {
         sidebar.append(next)
     }
 }
-
-//listener for clicks in city list
-$(".city-btn").on("click", function () {
+    //listener for clicks in city list
+$(document).on("click", ".city-btn", function () {
     //update active and stored variables for index
-    lastCity = this.attr("data-index");
+    lastCity = $(this).attr("data-index");
     localStorage.setItem("lastCity", lastCity)
     //call function to display weather in city
     displayWeather(lastCity)
@@ -93,8 +92,12 @@ function displayWeather(index) {
             alert("City not found. Please verify spelling and try again.")
         })
         .then(function (response) {
-            console.log(response)
-
+            let result = response;
+            console.log(result)
+            $("#cityName").html(city.name + ' <span class="h3" id="curDate"></span> <img id="curIcon" />');
+            $("#curDate").text("(" + Intl.DateTimeFormat(navigator.language).format(result.current.dt * 1000) + ")")
+            $("#curIcon").attr("src", "http://openweathermap.org/img/wn/" + result.current.weather[0].icon + "@2x.png")
+            $("#curIcon").attr("alt", result.current.weather[0].description)
         })
 }
 //   a. query OW for current data

@@ -14,24 +14,10 @@
     <header>
         <h1 class="py-3">Weather Widget</h1>
     </header>
-    <!-- Sidebar: text box to add in cities, list of past cities used underneath -->
-    <!-- <form>
-    <div class="form-inline">
-        <div class="my-1">
-            <label for="cityInput" class="col-form-label h4 text-left">Search for a city:</label>
-            <input type="text" class="form-control" id="cityInput">
-            <button type="submit" class="btn btn-primary"><svg width="1em" height="1em" viewBox="0 0 16 16"
-                    class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                        d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z" />
-                    <path fill-rule="evenodd"
-                        d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z" />
-                </svg></button>
-        </div>
-    </div>
-</form> -->
     <div class="container-fluid">
-        <div id="sideNav" class="col-md-3 d-md-block bg-light px-0">
+    <!-- Sidebar: text box to add in cities, list of past cities used underneath -->
+<div class="row">
+    <div id="sideNav" class="col-3 bg-light">
             <form class="form-inline py-2">
                 <label class="my-1 mr-2" for="inputCity">Search for a city:</label>
                 <div class="input-group">
@@ -58,19 +44,21 @@
                         d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
                 </svg>
             </a> -->
-
         </div>
 
-        <main class="col-md-9">
-
-        <!-- Main body: weather information from OpenWeather
+        <main class="col-9">
+            <div class="px-2">
+                <h2 id="cityName"></h2>
+            </div>
+            <!-- Main body: weather information from OpenWeather
     current information, include AQI?
     cards for 5-day forecast -->
-</main>
+        </main>
+    </div>
 </div>
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="Assets/script.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="Assets/script.js"></script>
 </body>
 
 </html>
