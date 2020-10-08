@@ -1,1 +1,12 @@
 /* make it pretty */
+header {
+    background-color: darkslategray;
+    color: white;
+    text-align: center;
+}
+
+#sideNav {
+    margin-top: -10px;
+    min-height: 100%;
+    border-right: thin solid gray;
+}
