@@ -46,6 +46,13 @@ $("#searchBtn").on("click", function (event) {
             console.log(response)
             let newResult = {}
             newResult.name = response.name
+            newResult.id = response.id
+            if (cityList.filter(e => e.id === newResult.id).length > 0) {
+                alert("City already in list.")
+                $("#searchText").val("")
+                return false
+            }
+            $("#searchText").val()
             newResult.lat = response.coord.lat
             newResult.lon = response.coord.lon
             cityList.push(newResult)
@@ -56,8 +63,6 @@ $("#searchBtn").on("click", function (event) {
             displayWeather(lastCity)
         })
 })
-//https://api.openweathermap.org/data/2.5/weather?q="+ city + "&appid=197e1ec7af271c40c8f36f27ca2585b9
-//   b. store all cities requested
 // II. Display list of all cities used
 function popList() {
     let sidebar = $("#cityBar")
@@ -74,30 +79,35 @@ function popList() {
 }
     //listener for clicks in city list
 $(document).on("click", ".city-btn", function () {
+    $(".city-btn[data-index='" + lastCity + "']").removeClass("bg-primary text-white")
+    $(".city-btn[data-index='" + lastCity + "']").addClass("bg-light")
     //update active and stored variables for index
     lastCity = $(this).attr("data-index");
+    $(".city-btn[data-index='" + lastCity + "']").addClass("bg-primary text-white")
+    $(".city-btn[data-index='" + lastCity + "']").removeClass("bg-light")
     localStorage.setItem("lastCity", lastCity)
     //call function to display weather in city
     displayWeather(lastCity)
 })
-
-//   c. Make current visibly different, store most recent used in storage too
 // III. Display current weather on city click
 function displayWeather(index) {
     //clear existing weather 
     $("#curStatus").html('<h2 id="cityName"></h2>')
+    $("#foreDeck").html('')
     //call OW for current and future weather in city of index
     let city = cityList[index]
     $.ajax({
-            url: "https://api.openweathermap.org/data/2.5/onecall?lat=" + city.lat + "&lon=" + city.lon + "&exclude=minutely,hourl&units=imperial&appid=197e1ec7af271c40c8f36f27ca2585b9",
+            url: "https://api.openweathermap.org/data/2.5/onecall?lat=" + city.lat + "&lon=" + city.lon + "&exclude=minutely,hourly&units=imperial&appid=197e1ec7af271c40c8f36f27ca2585b9",
             method: "GET"
         })
         .fail(function () {
-            alert("City not found. Please verify spelling and try again.")
+            alert("Something went wrong; try again.")
         })
         .then(function (response) {
             let result = response;
             console.log(result)
+            //Make body visible
+            $("#curStatus").removeClass("invisible")
             //Update city name
             $("#cityName").html(city.name + ' <span class="h3" id="curDate"></span> <img id="curIcon" />');
             //Add current date
@@ -125,6 +135,40 @@ function displayWeather(index) {
             } else if (uvi >= 8) {
                 $("#uvInd").addClass("badge badge-danger")
             }
+        //Five-day section
+        //Make body visible
+        $("#fiveDay").removeClass("invisible")
+        //Add cards to #foreDeck
+        for (i = 0; i < 5; i++) {
+            let newCard = $("<div>").addClass("card text-white bg-primary mb-3 forecast")
+            let newBody = $("<div>").addClass("card-body")
+            let newTitle = $("<h5>").addClass("card-title")
+            newTitle.text(Intl.DateTimeFormat(navigator.language).format(result.daily[i].dt * 1000))
+            newBody.append(newTitle)
+            //Add status icon indicated by API
+            let newIcon = $("<img>").addClass("foreIcon")
+            newIcon.attr("src", "http://openweathermap.org/img/wn/" + result.daily[i].weather[0].icon + "@2x.png")
+            $("#curIcon").attr("alt", result.daily[i].weather[0].description)
+            newBody.append(newIcon)
+            let newHi = $("<p>").addClass("card-text mb-0 mt-2")
+            newHi.text("Hi: " + result.daily[i].temp.max + "\xB0F")
+            newBody.append(newHi)
+            let newLo = $("<p>").addClass("card-text my-0")
+            newLo.text("Lo: " + result.daily[i].temp.min + "\xB0F")
+            newBody.append(newLo)
+            let newHum = $("<p>").addClass("card-text")
+            newHum.text("Humidity: " + result.daily[i].humidity + "%")
+            newBody.append(newHum)
+            newCard.append(newBody)
+            $("#foreDeck").append(newCard)
+        }
+        // <div class="card text-white bg-info mb-3" style="max-width: 15rem;">
+        //     <div class="card-body">
+        //         <h5 class="card-title">Info card title</h5>
+        //         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+        //             card's content.</p>
+        //     </div>
+        // </div>
         })
 }
 //   a. query OW for current data

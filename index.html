@@ -12,7 +12,7 @@
 <body>
     <!-- Header: Weather Widget -->
     <header>
-        <h1 class="py-3">Weather Widget</h1>
+        <h1 class="py-3 bg-dark">Weather Widget</h1>
     </header>
     <div class="container-fluid">
     <!-- Sidebar: text box to add in cities, list of past cities used underneath -->
@@ -33,7 +33,7 @@
                     </button>
                 </div>
             </form>
-            <div class="list-group list-group-flush px-0" id="cityBar">
+            <div class="list-group" id="cityBar">
             </div>
             <!-- trash icon for if I can get a remove-city icon to work -->
             <!-- <a class="badge badge-dark"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash"
@@ -49,8 +49,14 @@
     current information, include AQI?
     cards for 5-day forecast -->
         <main class="col-9">
-            <div class="p-3 invisible" id="curStatus">
+            <div class="p-3 my-2 invisible" id="curStatus">
                 <h2 id="cityName"></h2>
+            </div>
+            <div class="invisible my-2" id="fiveDay">
+                <h3>5-Day Forecast</h3>
+                <div class="card-deck" id="foreDeck">
+
+                </div>
             </div>
         </main>
     </div>
