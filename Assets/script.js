@@ -140,7 +140,7 @@ function displayWeather(index) {
         $("#fiveDay").removeClass("invisible")
         //Add cards to #foreDeck
         for (i = 0; i < 5; i++) {
-            let newCard = $("<div>").addClass("card text-white bg-primary mb-3 forecast")
+            let newCard = $("<div>").addClass("card text-white bg-primary mb-3 mx-1 float-left forecast")
             let newBody = $("<div>").addClass("card-body")
             let newTitle = $("<h5>").addClass("card-title")
             newTitle.text(Intl.DateTimeFormat(navigator.language).format(result.daily[i].dt * 1000))
