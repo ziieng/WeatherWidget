@@ -1,6 +1,5 @@
 /* make it pretty */
 header {
-    background-color: darkslategray;
     color: white;
     text-align: center;
 }
@@ -16,10 +15,35 @@ header {
         border-radius: 15px;
         height: 1.5em;
 }
+.foreIcon {
+    border-radius: 15px;
+    background-color: lightskyblue;
+    height: 2.5em
+}
+
 #uvInd {
     font-size: 1rem;
 }
 
 #curStatus {
     border: thin solid lightgray;
+}
+.forecast {
+    max-width: 15rem
+}
+
+.card {
+    text-align: center;
+}
+
+.bg-secondary {
+    color: white;
+}
+
+.bg-secondary :hover {
+    color: white;
+}
+
+.bg-secondary :focus {
+    color: white;
 }
