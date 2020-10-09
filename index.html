@@ -17,8 +17,8 @@
     <div class="container-fluid">
     <!-- Sidebar: text box to add in cities, list of past cities used underneath -->
 <div class="row">
-    <div id="sideNav" class="col-3 bg-light">
-            <form class="form-inline py-2">
+    <div id="sideNav" class="col-3 bg-light px-0">
+        <form class="form-inline p-3">
                 <label class="my-1 mr-2" for="inputCity">Search for a city:</label>
                 <div class="input-group">
                     <input type="text" class="form-control form-inline" id="searchText">
@@ -45,14 +45,13 @@
                 </svg>
             </a> -->
         </div>
-
-        <main class="col-9">
-            <div class="px-2">
-                <h2 id="cityName"></h2>
-            </div>
-            <!-- Main body: weather information from OpenWeather
+<!-- Main body: weather information from OpenWeather
     current information, include AQI?
     cards for 5-day forecast -->
+        <main class="col-9">
+            <div class="p-3 invisible" id="curStatus">
+                <h2 id="cityName"></h2>
+            </div>
         </main>
     </div>
 </div>

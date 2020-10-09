@@ -61,6 +61,8 @@ $("#searchBtn").on("click", function (event) {
 // II. Display list of all cities used
 function popList() {
     let sidebar = $("#cityBar")
+    //clear old list
+    sidebar.html("")
     //populate sidebar list of cities
     for (i = 0; i < cityList.length; i++) {
         let next = $("<a>").text(cityList[i].name);
@@ -82,10 +84,12 @@ $(document).on("click", ".city-btn", function () {
 //   c. Make current visibly different, store most recent used in storage too
 // III. Display current weather on city click
 function displayWeather(index) {
+    //clear existing weather 
+    $("#curStatus").html('<h2 id="cityName"></h2>')
     //call OW for current and future weather in city of index
     let city = cityList[index]
     $.ajax({
-            url: "https://api.openweathermap.org/data/2.5/onecall?lat=" + city.lat + "&lon=" + city.lon + "&exclude=minutely,hourly&appid=197e1ec7af271c40c8f36f27ca2585b9",
+            url: "https://api.openweathermap.org/data/2.5/onecall?lat=" + city.lat + "&lon=" + city.lon + "&exclude=minutely,hourl&units=imperial&appid=197e1ec7af271c40c8f36f27ca2585b9",
             method: "GET"
         })
         .fail(function () {
@@ -94,10 +98,33 @@ function displayWeather(index) {
         .then(function (response) {
             let result = response;
             console.log(result)
+            //Update city name
             $("#cityName").html(city.name + ' <span class="h3" id="curDate"></span> <img id="curIcon" />');
+            //Add current date
             $("#curDate").text("(" + Intl.DateTimeFormat(navigator.language).format(result.current.dt * 1000) + ")")
+            //Add status icon indicated by API
             $("#curIcon").attr("src", "http://openweathermap.org/img/wn/" + result.current.weather[0].icon + "@2x.png")
             $("#curIcon").attr("alt", result.current.weather[0].description)
+            //Add current temperature, in Fahrenheit
+            let temp = $("<p>").text("Temperature: " + result.current.temp + "\xB0F")
+            $("#curStatus").append(temp)
+            //Add current humidity
+            let humd = $("<p>").text("Humidity: " + result.current.humidity + "%")
+            $("#curStatus").append(humd)
+            //Add current wind speed
+            let wind = $("<p>").text("Wind Speed: " + result.current.wind_speed + " MPH")
+            $("#curStatus").append(wind)
+            //Add current UV Index, color coded
+            let uvi = parseFloat(result.current.uvi)
+            let uv = $("<p>").html('UV Index: <span id="uvInd">' + uvi + '</span>')
+            $("#curStatus").append(uv)
+            if (uvi < 3) {
+                $("#uvInd").addClass("badge badge-success")
+            } else if (uvi < 8) {
+                $("#uvInd").addClass("badge badge-warning")
+            } else if (uvi >= 8) {
+                $("#uvInd").addClass("badge badge-danger")
+            }
         })
 }
 //   a. query OW for current data
