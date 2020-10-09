@@ -13,23 +13,17 @@ if (localStorage.getItem("cityStorage")) {
     }
     // display weather for last city, or for index 0 if last index isn't saved
     displayWeather(lastCity)
-    // set active formatting for active city's button
-    $(".city-btn[data-index='" + lastCity + "']").addClass("bg-primary text-white")
-    $(".city-btn[data-index='" + lastCity + "']").removeClass("bg-light")
 }
 
 // Create listener for clicks in city list sidebar
 // because buttons are destroyed and remade, listener has to go on document
 $(document).on("click", ".city-btn", function () {
-    // reset format of previously active button
+    // reset format of previously active button (added in displayWeather)
     $(".city-btn[data-index='" + lastCity + "']").removeClass("bg-primary text-white")
     $(".city-btn[data-index='" + lastCity + "']").addClass("bg-light")
     // update active and stored variables for index
     lastCity = $(this).attr("data-index");
     localStorage.setItem("lastCity", lastCity)
-    // set active formatting for active city's button
-    $(".city-btn[data-index='" + lastCity + "']").addClass("bg-primary text-white")
-    $(".city-btn[data-index='" + lastCity + "']").removeClass("bg-light")
     //call function to display weather in city
     displayWeather(lastCity)
 })
@@ -99,7 +93,7 @@ function popList() {
         next.addClass("list-group-item list-group-item-action bg-light city-btn");
         // note index in attributes
         next.attr("data-index", i)
-        // dead-end link to make animations work
+        // add dead-end link to make animations work
         next.attr("href", "#")
         // append to city list on page
         sidebar.append(next)
@@ -110,6 +104,9 @@ function displayWeather(index) {
     //clear existing weather for current and forecast
     $("#curStatus").html('<h2 id="cityName"></h2>')
     $("#foreDeck").html('')
+    // set active formatting for active city's button
+    $(".city-btn[data-index='" + index + "']").addClass("bg-primary text-white")
+    $(".city-btn[data-index='" + index + "']").removeClass("bg-light")
     //call OW for current and future weather in city of index
     let city = cityList[index]
     $.ajax({
@@ -123,8 +120,6 @@ function displayWeather(index) {
         // on success:
         .then(function (response) {
             let result = response;
-            // make body visible
-            $("#curStatus").removeClass("invisible")
             // update city name
             $("#cityName").html(city.name + ' <span class="h3" id="curDate"></span> <img id="curIcon" />');
             // add current date
@@ -153,6 +148,7 @@ function displayWeather(index) {
             } else if (uvi >= 8) {
                 $("#uvInd").addClass("badge badge-danger")
             }
+
 //!!!!
 //Start five-day section
 //!!!!
@@ -175,11 +171,11 @@ function displayWeather(index) {
             newBody.append(newIcon)
             // add max temp forecast for day
             let newHi = $("<p>").addClass("card-text mb-0 mt-2")
-            newHi.text("Hi: " + result.daily[i].temp.max + "\xB0F")
+            newHi.text("High: " + result.daily[i].temp.max + "\xB0F")
             newBody.append(newHi)
             // add min temp forecast for day
             let newLo = $("<p>").addClass("card-text my-0")
-            newLo.text("Lo: " + result.daily[i].temp.min + "\xB0F")
+            newLo.text("Low: " + result.daily[i].temp.min + "\xB0F")
             newBody.append(newLo)
             // add humidity forecast for day
             let newHum = $("<p>").addClass("card-text")

@@ -34,16 +34,9 @@ header {
 
 .card {
     text-align: center;
+    border-radius: 10px;
 }
 
-.bg-secondary {
-    color: white;
-}
-
-.bg-secondary :hover {
-    color: white;
-}
-
-.bg-secondary :focus {
-    color: white;
+.city-button {
+    border-radius: 10px;
 }
