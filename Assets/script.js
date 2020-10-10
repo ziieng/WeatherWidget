@@ -125,7 +125,7 @@ function displayWeather(index) {
             // add current date
             $("#curDate").text("(" + Intl.DateTimeFormat(navigator.language).format(result.current.dt * 1000) + ")")
             // add status icon indicated by API response
-            $("#curIcon").attr("src", "http://openweathermap.org/img/wn/" + result.current.weather[0].icon + "@2x.png")
+            $("#curIcon").attr("src", "https://openweathermap.org/img/wn/" + result.current.weather[0].icon + "@2x.png")
             $("#curIcon").attr("alt", result.current.weather[0].description)
             // add current temperature, API already gives it in Fahrenheit
             let temp = $("<p>").text("Temperature: " + result.current.temp + "\xB0F")
