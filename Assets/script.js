@@ -12,20 +12,15 @@ if (localStorage.getItem("cityStorage")) {
         lastCity = parseInt(localStorage.getItem("lastCity"))
     }
     // display weather for last city, or for index 0 if last index isn't saved
-    displayWeather(lastCity)
+    clickHandle(lastCity)
 }
 
 // Create listener for clicks in city list sidebar
 // because buttons are destroyed and remade, listener has to go on document
 $(document).on("click", ".city-btn", function () {
-    // reset format of previously active button (added in displayWeather)
-    $(".city-btn[data-index='" + lastCity + "']").removeClass("bg-primary text-white")
-    $(".city-btn[data-index='" + lastCity + "']").addClass("bg-light")
-    // update active and stored variables for index
-    lastCity = $(this).attr("data-index");
-    localStorage.setItem("lastCity", lastCity)
-    //call function to display weather in city
-    displayWeather(lastCity)
+    // pass index to click handling function
+    let index = $(this).attr("data-index");
+    clickHandle(index)
 })
 
 //Create click listener for search button - function inside to validate input and add to cityList
@@ -57,11 +52,12 @@ $("#searchBtn").on("click", function (event) {
             newResult.id = response.id
             // check if matching city ID# already in cityList
             if (cityList.filter(e => e.id === newResult.id).length > 0) {
-                //tell user matching city ID# found
-                alert("City already in list.")
+                var thisCity = cityList.findIndex(e => e.id === newResult.id)
                 //empty input box
                 $("#searchText").val("")
-                //abort function
+                //"click" the existing button
+                clickHandle(thisCity)
+                //abort rest of this function
                 return false
             }
             // empty input box
@@ -81,6 +77,20 @@ $("#searchBtn").on("click", function (event) {
             displayWeather(lastCity)
         })
 })
+function clickHandle(index) {
+    // reset format of previously active button (added in displayWeather)
+    $(".city-btn[data-index='" + lastCity + "']").removeClass("bg-primary text-white")
+    $(".city-btn[data-index='" + lastCity + "']").addClass("bg-light")
+    // update active and stored variables for index
+    lastCity = index;
+    localStorage.setItem("lastCity", lastCity)
+    // set active formatting for active city's button
+    $(".city-btn[data-index='" + index + "']").addClass("bg-primary text-white")
+    $(".city-btn[data-index='" + index + "']").removeClass("bg-light")
+    // call weather updating
+    displayWeather(lastCity)
+}
+
 // Display list of all cities used
 function popList() {
     let sidebar = $("#cityBar")
@@ -104,9 +114,6 @@ function displayWeather(index) {
     //clear existing weather for current and forecast
     $("#curStatus").html('<h2 id="cityName"></h2>')
     $("#foreDeck").html('')
-    // set active formatting for active city's button
-    $(".city-btn[data-index='" + index + "']").addClass("bg-primary text-white")
-    $(".city-btn[data-index='" + index + "']").removeClass("bg-light")
     //call OW for current and future weather in city of index
     let city = cityList[index]
     $.ajax({
