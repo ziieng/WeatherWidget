@@ -156,7 +156,7 @@ function displayWeather(index) {
 // Make body visible
         $("#fiveDay").removeClass("invisible")
         // Add 5 cards to #foreDeck using API response's daily forecast section
-        for (i = 0; i < 5; i++) {
+        for (i = 1; i < 6; i++) {
             // create card HTML objects
             let newCard = $("<div>").addClass("card text-white bg-primary mb-3 mx-1 float-left forecast")
             let newBody = $("<div>").addClass("card-body")
@@ -166,7 +166,7 @@ function displayWeather(index) {
             newBody.append(newTitle)
             // add status icon indicated by API
             let newIcon = $("<img>").addClass("foreIcon")
-            newIcon.attr("src", "http://openweathermap.org/img/wn/" + result.daily[i].weather[0].icon + "@2x.png")
+            newIcon.attr("src", "https://openweathermap.org/img/wn/" + result.daily[i].weather[0].icon + "@2x.png")
             $("#curIcon").attr("alt", result.daily[i].weather[0].description)
             newBody.append(newIcon)
             // add max temp forecast for day
