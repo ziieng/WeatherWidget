@@ -56,6 +56,18 @@ header {
     border-radius: 10px;
 }
 
-.city-button {
-    border-radius: 10px;
+.city-btn {
+    border-right: none;
+    border-bottom-left-radius: 10px !important;
+    border-bottom-right-radius: 0px !important;
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 0px !important;
+}
+
+.del-btn {
+    border-left: none;
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 10px !important;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 10px !important;
 }

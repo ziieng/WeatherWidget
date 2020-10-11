@@ -101,20 +101,28 @@ function clickHandle(index) {
 
 // Display list of all cities used
 function popList() {
-    let sidebar = $("#cityBar")
     // clear old list
-    sidebar.html("")
+    $("#cityBar").html("")
+    $("#delBar").html("")
     // populate sidebar list of cities by loop
     for (i = 0; i < cityList.length; i++) {
         // create HTML object with city name and classes
         let next = $("<a>").text(cityList[i].name);
-        next.addClass("list-group-item list-group-item-action bg-light city-btn");
+        next.addClass("list-group-item list-group-item-action bg-light pl-2 city-btn");
         // note index in attributes
         next.attr("data-index", i)
         // add dead-end link to make animations work
         next.attr("href", "#")
         // append to city list on page
-        sidebar.append(next)
+        $("#cityBar").append(next)
+        // create HTML object with city name and classes
+        let del = $("<a>").text("X");
+        del.addClass("list-group-item list-group-item-action px-2 bg-light del-btn");
+        // note index in attributes
+        del.attr("data-index", i)
+        // add dead-end link to make animations work
+        del.attr("href", "#")
+        $("#delBar").append(del)
     }
 }
 // Function to display weather information for active city
