@@ -1,3 +1,11 @@
+$(document).ready(function () {
+
+    $('#sideNavCollapse').on('click', function () {
+        $('#sideNav').toggleClass('active');
+    });
+
+});
+
 // Declare global variables for city array and active index
 let cityList = []
 let lastCity = 0
@@ -79,13 +87,13 @@ $("#searchBtn").on("click", function (event) {
 })
 function clickHandle(index) {
     // reset format of previously active button (added in displayWeather)
-    $(".city-btn[data-index='" + lastCity + "']").removeClass("bg-primary text-white")
+    $(".city-btn[data-index='" + lastCity + "']").removeClass("bg-dark text-white")
     $(".city-btn[data-index='" + lastCity + "']").addClass("bg-light")
     // update active and stored variables for index
     lastCity = index;
     localStorage.setItem("lastCity", lastCity)
     // set active formatting for active city's button
-    $(".city-btn[data-index='" + index + "']").addClass("bg-primary text-white")
+    $(".city-btn[data-index='" + index + "']").addClass("bg-dark text-white")
     $(".city-btn[data-index='" + index + "']").removeClass("bg-light")
     // call weather updating
     displayWeather(lastCity)
@@ -165,7 +173,7 @@ function displayWeather(index) {
         // Add 5 cards to #foreDeck using API response's daily forecast section
         for (i = 1; i < 6; i++) {
             // create card HTML objects
-            let newCard = $("<div>").addClass("card text-white bg-primary mb-3 mx-1 float-left forecast")
+            let newCard = $("<div>").addClass("card text-white bg-dark mb-3 mx-1 float-left forecast")
             let newBody = $("<div>").addClass("card-body")
             let newTitle = $("<h5>").addClass("card-title")
             // format date for index's day, add to card

@@ -1,23 +1,42 @@
-/* make it pretty */
 header {
     color: white;
     text-align: center;
+}
+
+.wrapper {
+    display: flex;
+    align-items: stretch;
+}
+
+#sideNav.active {
+    margin-left: -250px;
+}
+
+@media (max-width: 768px) {
+    #sideNav {
+        margin-left: -250px;
+    }
+    #sideNav.active {
+        margin-left: 0;
+    }
 }
 
 #sideNav {
     margin-top: -10px;
     min-height: 90vh;
     border-right: thin solid lightgray;
+    min-width: 250px;
+    max-width: 250px;
     }
 
     #curIcon {
-        background-color: lightskyblue;
+        background-color: lightsteelblue;
         border-radius: 15px;
         height: 1.5em;
 }
 .foreIcon {
     border-radius: 15px;
-    background-color: lightskyblue;
+    background-color: lightsteelblue;
     height: 2.5em
 }
 
