@@ -10,7 +10,7 @@ $(document).ready(function () {
 let cityList = []
 let lastCity = 0
 // Populate cityList with list from localStorage
-if (localStorage.getItem("cityStorage")) {
+if (localStorage.getItem("cityStorage") && localStorage.getItem("cityStorage") != "[]") {
     // parse stored array
     cityList = JSON.parse(localStorage.getItem("cityStorage"))
     // display stored cities
@@ -29,6 +29,42 @@ $(document).on("click", ".city-btn", function () {
     // pass index to click handling function
     let index = $(this).attr("data-index");
     clickHandle(index)
+})
+
+// delete button for each city
+$(document).on("click", ".del-btn", function () {
+    // save index
+    let index = $(this).attr("data-index");
+    // if removing last city, delete local storage items
+    if (cityList.length == 1) {
+        localStorage.removeItem("cityStorage")
+        localStorage.removeItem("lastCity")
+        cityList = []
+        //Reset to default display 
+        $("#curStatus").html('<h4 id="cityName">No cities searched yet.</h4>')
+        $("#cityBar").html("")
+        $("#delBar").html("")
+        $("#foreDeck").html('')
+        $("#fiveDay").addClass("invisible")
+        return false
+    }
+    // remove city from array, update local storage
+    cityList.splice(index, 1)
+    localStorage.setItem("cityStorage", JSON.stringify(cityList))
+    // if removed city was active, show another city's weather
+    if (lastCity = index) {
+        if (lastCity != 0) {
+            lastCity = lastCity - 1
+        }
+        clickHandle(lastCity)
+    }
+    // if array is too short for saved index, lower index
+    if (lastCity == cityList.length) {
+        lastCity--
+    }
+    // update active index and save updated index to localStorage
+    localStorage.setItem("lastCity", lastCity)
+    popList()
 })
 
 //Create click listener for search button - function inside to validate input and add to cityList
@@ -79,22 +115,26 @@ $("#searchBtn").on("click", function (event) {
             // update active index and save updated index to localStorage
             lastCity = cityList.length - 1
             localStorage.setItem("lastCity", lastCity)
-            // call function to populate city buttons
+            // call function to re-populate city buttons
             popList()
             // call function to display weather in new city
-            displayWeather(lastCity)
+            clickHandle(lastCity)
         })
 })
 function clickHandle(index) {
-    // reset format of previously active button (added in displayWeather)
-    $(".city-btn[data-index='" + lastCity + "']").removeClass("bg-dark text-white")
+    // reset format of previously active button
+    $(".city-btn[data-index='" + lastCity + "']").removeClass("bg-info text-white")
     $(".city-btn[data-index='" + lastCity + "']").addClass("bg-light")
+    $(".del-btn[data-index='" + lastCity + "']").removeClass("bg-info text-white")
+    $(".del-btn[data-index='" + lastCity + "']").addClass("bg-light")
     // update active and stored variables for index
     lastCity = index;
     localStorage.setItem("lastCity", lastCity)
     // set active formatting for active city's button
-    $(".city-btn[data-index='" + index + "']").addClass("bg-dark text-white")
+    $(".city-btn[data-index='" + index + "']").addClass("bg-info text-white")
     $(".city-btn[data-index='" + index + "']").removeClass("bg-light")
+    $(".del-btn[data-index='" + index + "']").addClass("bg-info text-white")
+    $(".del-btn[data-index='" + index + "']").removeClass("bg-light")
     // call weather updating
     displayWeather(lastCity)
 }
@@ -116,8 +156,8 @@ function popList() {
         // append to city list on page
         $("#cityBar").append(next)
         // create HTML object with city name and classes
-        let del = $("<a>").text("X");
-        del.addClass("list-group-item list-group-item-action px-2 bg-light del-btn");
+        let del = $("<a>").html('<i class="fa fa-trash-o" aria-hidden="true"></i>');
+        del.addClass("list-group-item list-group-item-action bg-light px-2 del-btn");
         // note index in attributes
         del.attr("data-index", i)
         // add dead-end link to make animations work
@@ -172,42 +212,42 @@ function displayWeather(index) {
                 $("#uvInd").addClass("badge badge-danger")
             }
 
-//!!!!
-//Start five-day section
-//!!!!
+            //!!!!
+            //Start five-day section
+            //!!!!
 
-// Make body visible
-        $("#fiveDay").removeClass("invisible")
-        // Add 5 cards to #foreDeck using API response's daily forecast section
-        for (i = 1; i < 6; i++) {
-            // create card HTML objects
-            let newCard = $("<div>").addClass("card text-white bg-dark mb-3 mx-1 float-left forecast")
-            let newBody = $("<div>").addClass("card-body")
-            let newTitle = $("<h5>").addClass("card-title")
-            // format date for index's day, add to card
-            newTitle.text(Intl.DateTimeFormat(navigator.language).format(result.daily[i].dt * 1000))
-            newBody.append(newTitle)
-            // add status icon indicated by API
-            let newIcon = $("<img>").addClass("foreIcon")
-            newIcon.attr("src", "https://openweathermap.org/img/wn/" + result.daily[i].weather[0].icon + "@2x.png")
-            $("#curIcon").attr("alt", result.daily[i].weather[0].description)
-            newBody.append(newIcon)
-            // add max temp forecast for day
-            let newHi = $("<p>").addClass("card-text mb-0 mt-2")
-            newHi.text("High: " + result.daily[i].temp.max + "\xB0F")
-            newBody.append(newHi)
-            // add min temp forecast for day
-            let newLo = $("<p>").addClass("card-text my-0")
-            newLo.text("Low: " + result.daily[i].temp.min + "\xB0F")
-            newBody.append(newLo)
-            // add humidity forecast for day
-            let newHum = $("<p>").addClass("card-text")
-            newHum.text("Humidity: " + result.daily[i].humidity + "%")
-            newBody.append(newHum)
-            // add completed body object to card
-            newCard.append(newBody)
-            // add card to page
-            $("#foreDeck").append(newCard)
-        }
+            // Make body visible
+            $("#fiveDay").removeClass("invisible")
+            // Add 5 cards to #foreDeck using API response's daily forecast section
+            for (i = 1; i < 6; i++) {
+                // create card HTML objects
+                let newCard = $("<div>").addClass("card text-white bg-info mb-3 mx-1 float-left forecast")
+                let newBody = $("<div>").addClass("card-body")
+                let newTitle = $("<h5>").addClass("card-title")
+                // format date for index's day, add to card
+                newTitle.text(Intl.DateTimeFormat(navigator.language).format(result.daily[i].dt * 1000))
+                newBody.append(newTitle)
+                // add status icon indicated by API
+                let newIcon = $("<img>").addClass("foreIcon")
+                newIcon.attr("src", "https://openweathermap.org/img/wn/" + result.daily[i].weather[0].icon + "@2x.png")
+                $("#curIcon").attr("alt", result.daily[i].weather[0].description)
+                newBody.append(newIcon)
+                // add max temp forecast for day
+                let newHi = $("<p>").addClass("card-text mb-0 mt-2")
+                newHi.text("High: " + result.daily[i].temp.max + "\xB0F")
+                newBody.append(newHi)
+                // add min temp forecast for day
+                let newLo = $("<p>").addClass("card-text my-0")
+                newLo.text("Low: " + result.daily[i].temp.min + "\xB0F")
+                newBody.append(newLo)
+                // add humidity forecast for day
+                let newHum = $("<p>").addClass("card-text")
+                newHum.text("Humidity: " + result.daily[i].humidity + "%")
+                newBody.append(newHum)
+                // add completed body object to card
+                newCard.append(newBody)
+                // add card to page
+                $("#foreDeck").append(newCard)
+            }
         })
 }
