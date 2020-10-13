@@ -47,13 +47,11 @@ header {
 #curStatus {
     border: thin solid lightgray;
 }
-.forecast {
-    max-width: 15rem
-}
 
 .card {
     text-align: center;
     border-radius: 10px;
+    max-width: 12rem;
 }
 
 .city-btn {
