@@ -1,14 +1,15 @@
+// Declare global variables for city array and active index
+let cityList = []
+let lastCity = 0
+let owa = ""
+
 $(document).ready(function () {
 
     $('#sideNavCollapse').on('click', function () {
         $('#sideNav').toggleClass('active');
     });
-
+    gen()
 });
-
-// Declare global variables for city array and active index
-let cityList = []
-let lastCity = 0
 // Populate cityList with list from localStorage
 if (localStorage.getItem("cityStorage") && localStorage.getItem("cityStorage") != "[]") {
     // parse stored array
@@ -79,7 +80,7 @@ $("#searchBtn").on("click", function (event) {
     // send new text in a "Current Weather" query to OW and check if it's a valid city.
     // this method means user can also put in city ID#'s, but it won't break anything if they do.
     $.ajax({
-            url: "https://api.openweathermap.org/data/2.5/weather?q=" + newCity + "&appid=197e1ec7af271c40c8f36f27ca2585b9",
+            url: `https://api.openweathermap.org/data/2.5/weather?q=${newCity}&appid=${owa}`,
             method: "GET"
         })
         // error handling:
@@ -173,7 +174,7 @@ function displayWeather(index) {
     //call OW for current and future weather in city of index
     let city = cityList[index]
     $.ajax({
-            url: "https://api.openweathermap.org/data/2.5/onecall?lat=" + city.lat + "&lon=" + city.lon + "&exclude=minutely,hourly&units=imperial&appid=197e1ec7af271c40c8f36f27ca2585b9",
+            url: `https://api.openweathermap.org/data/2.5/onecall?lat=${city.lat}&lon=${city.lon}&exclude=minutely,hourly&units=imperial&appid=${owa}`,
             method: "GET"
         })
         // error handling:
