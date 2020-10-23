@@ -1,14 +1,12 @@
 // Declare global variables for city array and active index
 let cityList = []
 let lastCity = 0
-let owa = ""
 
 $(document).ready(function () {
 
     $('#sideNavCollapse').on('click', function () {
         $('#sideNav').toggleClass('active');
     });
-    gen()
 });
 // Populate cityList with list from localStorage
 if (localStorage.getItem("cityStorage") && localStorage.getItem("cityStorage") != "[]") {
@@ -77,6 +75,7 @@ $("#searchBtn").on("click", function (event) {
     if (newCity == "") {
         return false
     }
+let owa = gen()
     // send new text in a "Current Weather" query to OW and check if it's a valid city.
     // this method means user can also put in city ID#'s, but it won't break anything if they do.
     $.ajax({
@@ -173,6 +172,7 @@ function displayWeather(index) {
     $("#foreDeck").html('')
     //call OW for current and future weather in city of index
     let city = cityList[index]
+    let owa = gen()
     $.ajax({
             url: `https://api.openweathermap.org/data/2.5/onecall?lat=${city.lat}&lon=${city.lon}&exclude=minutely,hourly&units=imperial&appid=${owa}`,
             method: "GET"
@@ -189,7 +189,7 @@ function displayWeather(index) {
             // add current date
             $("#curDate").text("(" + Intl.DateTimeFormat(navigator.language).format(result.current.dt * 1000) + ")")
             // add status icon indicated by API response
-            $("#curIcon").attr("src", "https://openweathermap.org/img/wn/" + result.current.weather[0].icon + "@2x.png")
+            $("#curIcon").attr("src", "https://openweathermap.org/img/wn/" + result.current.weather[0].icon + ".png")
             $("#curIcon").attr("alt", result.current.weather[0].description)
             // add current temperature, API already gives it in Fahrenheit
             let temp = $("<p>").text("Temperature: " + result.current.temp + "\xB0F")

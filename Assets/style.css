@@ -12,12 +12,19 @@ header {
     margin-left: -250px;
 }
 
+#sideNavCollapse {
+    display: none;
+}
+
 @media (max-width: 768px) {
     #sideNav {
         margin-left: -250px;
     }
     #sideNav.active {
         margin-left: 0;
+    }
+    #sideNavCollapse {
+        display: unset;
     }
 }
 

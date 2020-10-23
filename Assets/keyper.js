@@ -1,6 +1,6 @@
 function gen() {
     let mkr = ["f", "b", "d", "2", "8", "3", "c", "1", "4", "a", "6", "7", "e", "9", "0"]
-    owa = ''
+    let owa = ''
     owa = owa + mkr[14]
     owa = owa + mkr[7]
     owa = owa + mkr[10]
@@ -33,4 +33,5 @@ function gen() {
     owa = owa + mkr[13]
     owa = owa + mkr[12]
     owa = owa + mkr[11]
+    return owa
 }
